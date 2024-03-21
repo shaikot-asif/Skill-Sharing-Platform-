@@ -115,7 +115,7 @@ const Footer = () => {
             </li>
           </ul>
         </div>
-        <div className="hidden md:flex flex-col items-center space-y-4 md:col-span-12 lg:col-span-10">
+        <div className="hidden md:flex flex-col items-center space-y-4 mt-[70px] md:col-span-12 lg:col-span-10">
           <div>
             <img src={images.Logo} alt="logo" className="w-24" />
           </div>
