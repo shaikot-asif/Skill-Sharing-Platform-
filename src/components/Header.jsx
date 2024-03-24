@@ -41,8 +41,9 @@ const NavItem = ({ item }) => {
             } lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}
           >
             <ul className="bg-dark-hard flex flex-col shadow-lg shadow-dark-soft overflow-hidden">
-              {item.items.map((name) => (
+              {item.items.map((name, index) => (
                 <a
+                  key={index}
                   className="px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
                   href="/"
                 >

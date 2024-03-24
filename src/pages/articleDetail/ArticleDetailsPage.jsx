@@ -4,6 +4,7 @@ import MainLayout from "../../components/MainLayout";
 import { Link } from "react-router-dom";
 import { images } from "../../constants";
 import SuggestPost from "./container/SuggestPost";
+import CommentContainer from "../../components/comments/comments/CommentContainer";
 
 const bradcrumbs = [
   { name: "Home", link: "/" },
@@ -74,6 +75,7 @@ const ArticleDetailsPage = () => {
               laborum dolorem laudantium!
             </p>
           </div>
+          <CommentContainer className="mt-10" />
         </article>
         <SuggestPost
           className="mt-8 lg:mt-0 lg:max-w-xs"
