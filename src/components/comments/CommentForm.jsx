@@ -1,8 +1,13 @@
 import React from "react";
 import { useState } from "react";
 
-const CommentForm = ({ btnLabel, formSubmitHandler }) => {
-  const [value, setValue] = useState("");
+const CommentForm = ({
+  btnLabel,
+  formSubmitHandler,
+  formCancelHandler = null,
+  initialText = "",
+}) => {
+  const [value, setValue] = useState(initialText);
   const submitHandler = (e) => {
     e.preventDefault();
     formSubmitHandler(value);
@@ -18,12 +23,22 @@ const CommentForm = ({ btnLabel, formSubmitHandler }) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
         />
-        <button
-          type="submit"
-          className="mt-2 px-6 py-2.5 rounded-lg bg-primary text-white font-semibold"
-        >
-          {btnLabel}
-        </button>
+        <div className="flex flex-col-reverse gap-y-2 items-center gap-x-2 pt-2 min-[420px]:flex-row">
+          {formCancelHandler && (
+            <button
+              onClick={formCancelHandler}
+              className="px-6 py-2 rounded-lg border border-red-500 text-red-500"
+            >
+              Cancel
+            </button>
+          )}
+          <button
+            type="submit"
+            className=" px-6 py-2.5 rounded-lg bg-primary text-white font-semibold"
+          >
+            {btnLabel}
+          </button>
+        </div>
       </div>
     </form>
   );

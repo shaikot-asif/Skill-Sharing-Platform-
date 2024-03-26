@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { images } from "../../constants";
 import SuggestPost from "./container/SuggestPost";
 import CommentContainer from "../../components/comments/comments/CommentContainer";
+import SocialShareButtons from "../../components/comments/SocialShareButtons";
 
 const bradcrumbs = [
   { name: "Home", link: "/" },
@@ -75,14 +76,24 @@ const ArticleDetailsPage = () => {
               laborum dolorem laudantium!
             </p>
           </div>
-          <CommentContainer className="mt-10" />
+          <CommentContainer className="mt-10" logginedUserId="a" />
         </article>
-        <SuggestPost
-          className="mt-8 lg:mt-0 lg:max-w-xs"
-          header="Latest Article"
-          posts={postData}
-          tags={tagsData}
-        />
+
+        <div>
+          <SuggestPost
+            className="mt-8 lg:mt-0 lg:max-w-xs"
+            header="Latest Article"
+            posts={postData}
+            tags={tagsData}
+          />
+
+          <div className="mt-7">
+            <h2 className="font-roboto font-medium text-white mb-4 md:text-xl">
+              Share on:
+            </h2>
+            <SocialShareButtons url={encodeURI("https://stacklearner.com")} />
+          </div>
+        </div>
       </section>
     </MainLayout>
   );
