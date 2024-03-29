@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose";
+import bcrypt from "bcryptjs";
+import jsonWebToken from "jsonwebtoken";
 
 const UserSchema = new Schema(
   {
@@ -13,6 +15,23 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
+UserSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  try {
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    return next(error);
+  }
+});
+UserSchema.methods.generateJWT = async function () {
+  return await jsonWebToken.sign({ id: this._id }, process.env.JWT_TOKEN, {
+    expiresIn: "30d",
+  });
+};
 const User = model("User", UserSchema);
 
 export default User;
