@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -9,7 +9,9 @@ const registerUser = async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      return res.status(400).json({ message: "User have already registerd" });
+      // return res.status(400).json({ message: "User have already registerd" });
+
+      throw new Error("User have already registerd");
     }
 
     //creating a new user
@@ -28,8 +30,54 @@ const registerUser = async (req, res) => {
       token: await user.generateJWT(),
     });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Something went wrong" });
+    next(error);
   }
 };
-export { registerUser };
+const loginUser = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+    let user = await User.findOne({ email });
+    if (!user) {
+      throw new Error("Email not found");
+    }
+
+    if (await user.comparePassword(password)) {
+      return res.status(201).json({
+        _id: user._id,
+        avatar: user.avatar,
+        name: user.name,
+        email: user.email,
+        verified: user.verified,
+        admin: user.admin,
+        token: await user.generateJWT(),
+      });
+    } else {
+      throw new Error("Invalid email or password");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const userProfile = async (req, res, next) => {
+  try {
+    let user = await User.findById(req.user._id);
+    if (user) {
+      return res.status(201).json({
+        _id: user._id,
+        avatar: user.avatar,
+        name: user.name,
+        email: user.email,
+        verified: user.verified,
+        admin: user.admin,
+      });
+    } else {
+      let error = new Error("user not found");
+      error.statusCode = 404;
+      next(error);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+export { registerUser, loginUser, userProfile };
