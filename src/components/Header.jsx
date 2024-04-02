@@ -4,6 +4,8 @@ import { images } from "../constants";
 import { CiMenuBurger } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../store/actions/user.js";
 
 const NavItemList = [
   { name: "Home", type: "link" },
@@ -58,10 +60,17 @@ const NavItem = ({ item }) => {
   );
 };
 const Header = () => {
+  const userState = useSelector((state) => state.user);
   const [navIsVisible, setNavIsVisible] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState(false);
+  const dispatch = useDispatch();
 
   const navVisibilityHandelar = () => {
     setNavIsVisible(!navIsVisible);
+  };
+
+  const logoutHandler = () => {
+    dispatch(logout());
   };
   return (
     <div className="sticky top-0 left-0 right-0 z-50 bg-dark-hard border-b border-dark-soft">
@@ -92,9 +101,47 @@ const Header = () => {
               <NavItem key={item.name} item={item} />
             ))}
           </ul>
-          <button className="border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
-            Sign in
-          </button>
+
+          {userState.userInfo ? (
+            <div className="flex flex-col lg:flex-row lg:gap-x-5 gap-y-5 font-semibold items-center">
+              <div className="relative group">
+                <div className="flex flex-col items-center">
+                  <button
+                    className=" flex gap-x-1 items-center  border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
+                    onClick={() => setProfileDropdown(!profileDropdown)}
+                  >
+                    <span>Profile</span>
+                    <RiArrowDropDownLine />
+                  </button>
+                  <div
+                    className={`${
+                      profileDropdown ? "block" : "hidden"
+                    } lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}
+                  >
+                    <ul className="bg-dark-hard flex flex-col shadow-lg shadow-dark-soft overflow-hidden">
+                      <button
+                        className="text-white px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
+                        type="button"
+                      >
+                        Dashboard
+                      </button>
+                      <button
+                        className="text-white px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
+                        type="button"
+                        onClick={logoutHandler}
+                      >
+                        Logout
+                      </button>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <button className="border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
+              Sign in
+            </button>
+          )}
         </div>
       </header>
     </div>
