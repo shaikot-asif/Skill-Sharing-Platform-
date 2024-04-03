@@ -5,6 +5,7 @@ import ArticleDetailsPage from "./pages/articleDetail/ArticleDetailsPage";
 import RegisterPage from "./pages/register/RegisterPage";
 import { Toaster } from "react-hot-toast";
 import LoginPage from "./pages/login/LoginPage";
+import ProfilePage from "./pages/profile/ProfilePage";
 function App() {
   return (
     <div className="font-openSans bg-dark-hard">
@@ -14,6 +15,7 @@ function App() {
         <Route path="/blog/:id" element={<ArticleDetailsPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <Toaster />
     </div>

@@ -112,7 +112,7 @@ const Header = () => {
                     className=" flex gap-x-1 items-center  border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
                     onClick={() => setProfileDropdown(!profileDropdown)}
                   >
-                    <span>Profile</span>
+                    <span>Account</span>
                     <RiArrowDropDownLine />
                   </button>
                   <div
@@ -124,8 +124,9 @@ const Header = () => {
                       <button
                         className="text-white px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
                         type="button"
+                        onClick={() => navigate("/profile")}
                       >
-                        Dashboard
+                        Profile
                       </button>
                       <button
                         className="text-white px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
