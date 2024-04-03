@@ -5,6 +5,7 @@ import { CiMenuBurger } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { logout } from "../store/actions/user.js";
 
 const NavItemList = [
@@ -60,6 +61,7 @@ const NavItem = ({ item }) => {
   );
 };
 const Header = () => {
+  const navigate = useNavigate();
   const userState = useSelector((state) => state.user);
   const [navIsVisible, setNavIsVisible] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
@@ -138,7 +140,10 @@ const Header = () => {
               </div>
             </div>
           ) : (
-            <button className="border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300">
+            <button
+              onClick={() => navigate("/login")}
+              className="border-2 mt-5 lg:my-0 border-blue-500 px-6 py-2 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"
+            >
               Sign in
             </button>
           )}
