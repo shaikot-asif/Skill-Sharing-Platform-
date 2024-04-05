@@ -3,16 +3,19 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
 import MainLayout from "../../components/MainLayout";
-import { getUserProfile } from "../../services/index/users.js";
+import { getUserProfile, updateProfile } from "../../services/index/users.js";
 import ProfilePicture from "../../components/ProfilePicture";
+import { userActions } from "../../store/reducers/userReducer.js";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const userState = useSelector((state) => state.user);
 
@@ -25,6 +28,24 @@ const ProfilePage = () => {
       return getUserProfile({ token: userState.userInfo.token });
     },
     queryKey: ["profile"],
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: ({ name, email, password }) => {
+      return updateProfile({
+        token: userState.userInfo.token,
+        userData: { name, email, password },
+      });
+    },
+    onSuccess: (data) => {
+      dispatch(userActions.setUserInfo(data));
+      localStorage.setItem("account", JSON.stringify(data));
+      queryClient.invalidateQueries(["profile"]);
+      toast.success("Profile is updated");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   useEffect(() => {
@@ -49,7 +70,10 @@ const ProfilePage = () => {
     mode: "onChange",
   });
 
-  const submitHandler = (data) => {};
+  const submitHandler = (data) => {
+    const { name, email, password } = data;
+    mutate({ name, email, password });
+  };
 
   return (
     <MainLayout>
@@ -121,22 +145,13 @@ const ProfilePage = () => {
                 htmlFor="password"
                 className="text-white font-semibold block"
               >
-                Password
+                New Password (optional)
               </label>
               <input
                 type="password"
                 id="password"
-                {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Password is required",
-                  },
-                  minLength: {
-                    value: 6,
-                    message: "Password length must be at least 6 character",
-                  },
-                })}
-                placeholder="Enter password"
+                {...register("password")}
+                placeholder="Enter New password"
                 className={`bg-transparent placeholder:text-white text-white mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border  ${
                   errors.password ? "border-red-500" : "border-white"
                 }`}
@@ -153,7 +168,7 @@ const ProfilePage = () => {
               disabled={!isValid || profileIsLoading}
               className="disabled:opacity-70 disabled:cursor-not-allowed bg-primary text-white font-bold text-lg py-4 px-8 w-full rounded-lg mb-6"
             >
-              Register
+              Update
             </button>
           </form>
         </div>
