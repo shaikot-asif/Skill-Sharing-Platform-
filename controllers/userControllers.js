@@ -115,7 +115,7 @@ const updateProfile = async (req, res, next) => {
 
 const updateProfilePicture = async (req, res, next) => {
   try {
-    const upload = uploadPicture.single("profilePiture"); // 'profilePiture' should match the name attribute in your HTML form
+    const upload = uploadPicture.single("profilePicture"); // 'profilePiture' should match the name attribute in your HTML form
 
     upload(req, res, async function (err) {
       if (err) {
