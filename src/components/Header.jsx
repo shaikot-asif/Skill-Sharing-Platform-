@@ -7,13 +7,21 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../store/actions/user.js";
+import { Link } from "react-router-dom";
 
 const NavItemList = [
-  { name: "Home", type: "link" },
-  { name: "Articles", type: "link" },
-  { name: "Pages", type: "dropdown", items: ["About Us", "Contact Us"] },
-  { name: "Item", type: "link" },
-  { name: "Faq", type: "link" },
+  { name: "Home", type: "link", href: "/" },
+  { name: "Articles", type: "link", href: "/articles" },
+  {
+    name: "Pages",
+    type: "dropdown",
+    items: [
+      { title: "About Us", href: "/about" },
+      { title: "Contact Us", href: "/contact" },
+    ],
+  },
+  { name: "Item", type: "link", href: "/item" },
+  { name: "Faq", type: "link", href: "/faq" },
 ];
 const NavItem = ({ item }) => {
   const [dropdown, setDropdown] = useState(false);
@@ -25,9 +33,9 @@ const NavItem = ({ item }) => {
     <li className="relative group border-b text-white border-transparent transition-all duration-300 hover:border-b hover:border-b-blue-500 cursor-pointer">
       {item.type === "link" ? (
         <div>
-          <a className="py-4 px-2" href="/">
+          <Link className="py-4 px-2" to={item.href}>
             {item.name}
-          </a>
+          </Link>
         </div>
       ) : (
         <div className="flex flex-col items-center">
@@ -45,13 +53,13 @@ const NavItem = ({ item }) => {
           >
             <ul className="bg-dark-hard flex flex-col shadow-lg shadow-dark-soft overflow-hidden">
               {item.items.map((name, index) => (
-                <a
+                <Link
                   key={index}
                   className="px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
-                  href="/"
+                  to={name.href}
                 >
-                  {name}
-                </a>
+                  {name.title}
+                </Link>
               ))}
             </ul>
           </div>
@@ -77,9 +85,9 @@ const Header = () => {
   return (
     <div className="sticky top-0 left-0 right-0 z-50 bg-dark-hard border-b border-dark-soft">
       <header className="container mx-auto px-5 flex justify-between py-4 items-center">
-        <div>
+        <Link to="/">
           <img className="w-24 z-auto" src={images.Logo} alt="logo" />
-        </div>
+        </Link>
         <div className="lg:hidden z-50">
           {navIsVisible ? (
             <IoIosClose

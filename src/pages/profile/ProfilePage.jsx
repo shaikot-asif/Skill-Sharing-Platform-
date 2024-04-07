@@ -30,7 +30,7 @@ const ProfilePage = () => {
     queryKey: ["profile"],
   });
 
-  const { mutate } = useMutation({
+  const { mutate, updateProfileIsLoading } = useMutation({
     mutationFn: ({ name, email, password }) => {
       return updateProfile({
         token: userState.userInfo.token,
