@@ -11,9 +11,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // const __dirname = path.resolve();
 
 import cors from "cors";
+
 //routes
 
 import userRoutes from "./routes/userRoutes.js";
+import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
 mongoConnect();
@@ -26,6 +28,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/posts", postRoutes);
 
 //static assets
 console.log(__dirname);
