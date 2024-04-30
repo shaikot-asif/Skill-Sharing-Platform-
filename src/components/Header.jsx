@@ -20,8 +20,8 @@ const NavItemList = [
       { title: "Contact Us", href: "/contact" },
     ],
   },
-  { name: "Item", type: "link", href: "/item" },
-  { name: "Faq", type: "link", href: "/faq" },
+  // { name: "Item", type: "link", href: "/item" },
+  { name: "Message", type: "link", href: "/message" },
 ];
 const NavItem = ({ item }) => {
   const [dropdown, setDropdown] = useState(false);
