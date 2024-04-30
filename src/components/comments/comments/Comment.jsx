@@ -1,5 +1,5 @@
 import React from "react";
-import { images } from "../../../constants";
+import { images, stables } from "../../../constants";
 import { FiMessageSquare } from "react-icons/fi";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
@@ -35,7 +35,7 @@ const Comment = ({
     <div className="flex flex-nowrap items-start gap-x-3 bg-dark-hard p-3 rounded-lg">
       <img
         className="w-9 h-9 object-cover rounded-full"
-        src={images.PostProfileImage}
+        src={comment?.user?.avatar? stables.UPLOAD_FOLDER_BASE_URL + comment.user.avatar : images.PostProfileImage}
         alt="user Profile"
       />
       <div className="flex-1 flex flex-col">

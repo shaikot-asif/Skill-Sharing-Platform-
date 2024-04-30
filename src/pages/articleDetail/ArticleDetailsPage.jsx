@@ -17,6 +17,7 @@ import Italic from "@tiptap/extension-italic";
 import parse from "html-react-parser";
 import ArticleDetailSkeleton from "./components/ArticleDetailSkeleton";
 import ErrorMessage from "../../components/ErrorMessage";
+import {useSelector} from 'react-redux'
 // const breadcrumbs = [
 //   { name: "Home", link: "/" },
 //   { name: "Blog", link: "/blog" },
@@ -52,6 +53,8 @@ const tagsData = ["JavaScipt", "React.js", "Node js", "Web Development"];
 
 const ArticleDetailsPage = () => {
   const { slug } = useParams();
+
+  const userState = useSelector(state=>state.user)
 
   const [breadcrumbs, setBreadCrumbs] = useState([]);
   const [body, setBody] = useState(null);
@@ -104,8 +107,8 @@ const ArticleDetailsPage = () => {
   useEffect(() => {
     setBreadCrumbs([
       { name: "Home", link: "/" },
-      { name: "Blog", link: "/blog" },
-      { name: "Article title", link: `/blog/${data?.slug}` },
+      { name: "Articles", link: "/blog" },
+      { name: `${data?.title}`, link: `/blog/${data?.slug}` },
     ]);
     setBody(parse(generateHTML(json,[Bold,Paragraph,Document,Italic,Text])))
   }, [data]);
@@ -145,7 +148,7 @@ const ArticleDetailsPage = () => {
               {data?.title}
             </h1>
             <div className="mt-4 text-white">{body}</div>
-            <CommentContainer className="mt-10" logginedUserId="a" />
+            <CommentContainer comments={data?.comments} className="mt-10" logginedUserId={userState?.userInfo?._id} postSlug={slug}/>
           </article>
 
           <div>
