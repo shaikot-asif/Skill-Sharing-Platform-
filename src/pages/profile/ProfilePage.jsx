@@ -11,6 +11,7 @@ import { getUserProfile, updateProfile } from "../../services/index/users.js";
 import ProfilePicture from "../../components/ProfilePicture";
 import { userActions } from "../../store/reducers/userReducer.js";
 import toast from "react-hot-toast";
+import { useMemo } from "react";
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -63,10 +64,12 @@ const ProfilePage = () => {
       email: "",
       password: "",
     },
-    values: {
-      name: profileIsLoading ? "" : profileData.name,
-      email: profileIsLoading ? "" : profileData.email,
-    },
+    values: useMemo(() => {
+      return {
+        name: profileIsLoading ? "" : profileData.name,
+        email: profileIsLoading ? "" : profileData.email,
+      };
+    }, [profileData?.email, profileData?.name]),
     mode: "onChange",
   });
 

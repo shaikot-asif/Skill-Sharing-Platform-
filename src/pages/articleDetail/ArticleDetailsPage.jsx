@@ -17,7 +17,7 @@ import Italic from "@tiptap/extension-italic";
 import parse from "html-react-parser";
 import ArticleDetailSkeleton from "./components/ArticleDetailSkeleton";
 import ErrorMessage from "../../components/ErrorMessage";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 // const breadcrumbs = [
 //   { name: "Home", link: "/" },
 //   { name: "Blog", link: "/blog" },
@@ -54,55 +54,52 @@ const tagsData = ["JavaScipt", "React.js", "Node js", "Web Development"];
 const ArticleDetailsPage = () => {
   const { slug } = useParams();
 
-  const userState = useSelector(state=>state.user)
+  const userState = useSelector((state) => state.user);
 
   const [breadcrumbs, setBreadCrumbs] = useState([]);
   const [body, setBody] = useState(null);
 
   const { data, isLoading, isError } = useQuery({
-    queryFn:async () => await getSinglePosts({ slug }),
+    queryFn: async () => await getSinglePosts({ slug }),
 
     queryKey: ["blog", slug],
-
-    
   });
-  let json
+  let json;
   if (data === undefined) {
     json = {
-      "type": "doc",
-      "content": [
+      type: "doc",
+      content: [
         {
-          "type": "paragraph",
-          "content": [
+          type: "paragraph",
+          content: [
             {
-              "type": "text",
-              "text": "Wow, this editor instance exports its content as JSON"
-            }
-          ]
+              type: "text",
+              text: "content as JSON this is try",
+            },
+          ],
         },
         {
-          "type": "paragraph",
-          "content": [
+          type: "paragraph",
+          content: [
             {
-              "type": "text",
-              "marks": [
+              type: "text",
+              marks: [
                 {
-                  "type": "bold"
+                  type: "bold",
                 },
                 {
-                  "type": "italic"
-                }
+                  type: "italic",
+                },
               ],
-              "text": "this is a bold text"
-            }
-          ]
-        }
-      ]
-    }
-  }else{
-    json = data.body
+              text: "this is a bold text",
+            },
+          ],
+        },
+      ],
+    };
+  } else {
+    json = data.body;
   }
-
 
   useEffect(() => {
     setBreadCrumbs([
@@ -110,10 +107,10 @@ const ArticleDetailsPage = () => {
       { name: "Articles", link: "/blog" },
       { name: `${data?.title}`, link: `/blog/${data?.slug}` },
     ]);
-    setBody(parse(generateHTML(json,[Bold,Paragraph,Document,Italic,Text])))
-  }, [data]);
-
-  console.log(json, "detail data");
+    setBody(
+      parse(generateHTML(json, [Bold, Paragraph, Document, Italic, Text]))
+    );
+  }, [json]);
 
   return (
     <MainLayout>
@@ -148,7 +145,12 @@ const ArticleDetailsPage = () => {
               {data?.title}
             </h1>
             <div className="mt-4 text-white">{body}</div>
-            <CommentContainer comments={data?.comments} className="mt-10" logginedUserId={userState?.userInfo?._id} postSlug={slug}/>
+            <CommentContainer
+              comments={data?.comments}
+              className="mt-10"
+              logginedUserId={userState?.userInfo?._id}
+              postSlug={slug}
+            />
           </article>
 
           <div>

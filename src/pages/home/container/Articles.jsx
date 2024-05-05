@@ -30,7 +30,7 @@ const Articles = () => {
         ) : isError ? (
           <ErrorMessage message={"Couldn't found data"} />
         ) : (
-          data.map((post) => (
+          data?.data.map((post) => (
             <ArticleCard
               key={post._id}
               post={post}
