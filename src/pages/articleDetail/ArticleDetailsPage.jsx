@@ -18,6 +18,7 @@ import parse from "html-react-parser";
 import ArticleDetailSkeleton from "./components/ArticleDetailSkeleton";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useSelector } from "react-redux";
+import Editor from "../../components/editor/Editor";
 // const breadcrumbs = [
 //   { name: "Home", link: "/" },
 //   { name: "Blog", link: "/blog" },
@@ -78,28 +79,13 @@ const ArticleDetailsPage = () => {
             },
           ],
         },
-        {
-          type: "paragraph",
-          content: [
-            {
-              type: "text",
-              marks: [
-                {
-                  type: "bold",
-                },
-                {
-                  type: "italic",
-                },
-              ],
-              text: "this is a bold text",
-            },
-          ],
-        },
       ],
     };
   } else {
     json = data.body;
   }
+
+  console.log(data?.body);
 
   useEffect(() => {
     setBreadCrumbs([
@@ -144,7 +130,7 @@ const ArticleDetailsPage = () => {
             <h1 className="md:text-[26px] text-xl font-medium font-roboto mt-4 text text-white">
               {data?.title}
             </h1>
-            <div className="mt-4 text-white">{body}</div>
+            <div className="w-full text-white">{!isLoading && !isError && <Editor content={data?.body} editable={false}/>  }</div>
             <CommentContainer
               comments={data?.comments}
               className="mt-10"

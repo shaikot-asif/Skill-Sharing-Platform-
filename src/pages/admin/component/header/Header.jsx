@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { images } from "../../../../constants/index.js";
 import { AiOutlineClose, AiOutlineMenu, AiFillDashboard } from "react-icons/ai";
 import { FaComments } from "react-icons/fa";
@@ -7,37 +7,18 @@ import { MdDashboard } from "react-icons/md";
 import NavItem from "./NavItem.jsx";
 import NavItemCollapse from "./NavItemCollapse.jsx";
 import { useWindowSize } from "@uidotdev/usehooks";
-const MENU_ITEMS = [
-  {
-    title: "Dashboard",
-    link: "/admin",
-    icon: <AiFillDashboard className="text-xl" />,
-    name: "dashboard",
-    type: "link",
-  },
-  {
-    title: "Comments",
-    link: "/admin/comments",
-    icon: <FaComments className="text-xl" />,
-    name: "comments",
-    type: "link",
-  },
-  {
-    title: "Posts",
-    content: [
-      { title: "New", link: "/admin/posts/new" },
-      { title: "Manage", link: "/admin/posts/manage" },
-    ],
-    icon: <MdDashboard className="text-xl" />,
-    name: "posts",
-    type: "collapse",
-  },
-];
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { createePost } from "../../../../services/index/post.js";
 
 const Header = () => {
+  const queryClient = useQueryClient();
+  const userState = useSelector((state) => state.user);
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeNavName, setActiveNavName] = useState("dashboard");
   const windoSize = useWindowSize();
+  const navigate = useNavigate();
   const toggleMenuHandler = () => {
     setIsMenuActive(!isMenuActive);
   };
@@ -49,6 +30,28 @@ const Header = () => {
       setIsMenuActive(true);
     }
   }, [windoSize.width]);
+
+  const { mutate: mutateCreatePost, isLoading: isLoadingCreatePost } =
+    useMutation({
+      mutationFn: ({ token }) => {
+        return createePost({
+          token,
+        });
+      },
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["posts"]);
+        toast.success("Post is created");
+        navigate(`/admin/posts/manage/edit/${data?.slug}`);
+      },
+      onError: (error) => {
+        toast.error(error.message);
+        console.log(error);
+      },
+    });
+  const handleCreateNewPost = ({ token }) => {
+    mutateCreatePost({ token });
+  };
+
   return (
     <header className="flex h-fit w-full items-center justify-between p-4 lg:h-full lg:max-w-[300px] lg:flex-col lg:items-start lg:justify-start lg:p-0  bg-dark-hard border-b border-dark-soft">
       {/* logo */}
@@ -78,29 +81,42 @@ const Header = () => {
 
             <h4 className="mt-10 font-bold text-primary">MAIN MENU</h4>
             <div className="mt-6 flex-col gap-y-[0.563rem]">
-              {MENU_ITEMS.map((item) =>
-                item.type === "link" ? (
-                  <NavItem
-                    title={item.title}
-                    name={item.name}
-                    icon={item.icon}
-                    link={item.link}
-                    activeNavName={activeNavName}
-                    setActiveNavName={setActiveNavName}
-                    key={item.name}
-                  />
-                ) : (
-                  <NavItemCollapse
-                    title={item.title}
-                    name={item.name}
-                    icon={item.icon}
-                    content={item.content}
-                    activeNavName={activeNavName}
-                    setActiveNavName={setActiveNavName}
-                    key={item.name}
-                  />
-                )
-              )}
+              <NavItem
+                title="Dashboard"
+                name="dashboard"
+                icon={<AiFillDashboard className="text-xl" />}
+                link="/admin"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              />
+
+              <NavItem
+                title="Comments"
+                name="comments"
+                icon={<FaComments className="text-xl" />}
+                link="/admin/comments"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              />
+
+              <NavItemCollapse
+                title="Posts"
+                icon={<MdDashboard className="text-xl" />}
+                name="posts"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              >
+                <Link to="/admin/posts/manage">Manage posts</Link>
+                <button
+                  disabled={isLoadingCreatePost}
+                  onClick={() =>
+                    handleCreateNewPost({ token: userState.userInfo.token })
+                  }
+                  className="text-start disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  Add New Post
+                </button>
+              </NavItemCollapse>
             </div>
           </div>
         </div>

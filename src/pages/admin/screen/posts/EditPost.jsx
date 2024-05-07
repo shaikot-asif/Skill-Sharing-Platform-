@@ -6,11 +6,12 @@ import ArticleDetailSkeleton from "../../../articleDetail/components/ArticleDeta
 import ErrorMessage from "../../../../components/ErrorMessage";
 import { useState } from "react";
 import { useEffect } from "react";
-import parseJsonToHtml from "../../../../utils/parseJsonToHtml";
-import { Link } from "react-router-dom";
+
 import { stables } from "../../../../constants";
 import { HiOutlineCamera } from "react-icons/hi";
 import toast from "react-hot-toast";
+import Editor from "../../../../components/editor/Editor";
+import { useSelector } from "react-redux";
 
 const EditPost = () => {
   const { slug } = useParams();
@@ -19,23 +20,21 @@ const EditPost = () => {
   const [photo, setPhoto] = useState(null);
   const [body, setbody] = useState(null);
 
+  const userState = useSelector((state) => state.user);
+
   const { data, isLoading, isError } = useQuery({
     queryFn: async () => await getSinglePosts({ slug }),
 
     queryKey: ["blog", slug],
   });
 
-  useEffect(
-    () => {
-      if (!isLoading && !isError) {
-        setInitialPhoto(data?.photo);
-        setbody(parseJsonToHtml(data?.body));
-      }
-    },
-    [ isError, isLoading, data ]
-  );
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      setInitialPhoto(data?.photo);
+    }
+  }, [isError, isLoading, data]);
 
-  const {mutate:mutateUpdatePostDetail} = useMutation({
+  const { mutate: mutateUpdatePostDetail } = useMutation({
     mutationFn: ({ updatedData, slug, token }) => {
       return updatePost({ updatedData, slug, token });
     },
@@ -71,8 +70,12 @@ const EditPost = () => {
       );
       updatedData.append("postPicture", picture);
     }
-    updatedData.append("document", JSON.stringify({}));
-    mutateUpdatePostDetail({updatedData,slug,token})
+    updatedData.append("document", JSON.stringify({ body }));
+    mutateUpdatePostDetail({
+      updatedData,
+      slug,
+      token: userState?.userInfo?.token,
+    });
   };
 
   const handleDeleteImage = () => {
@@ -90,7 +93,7 @@ const EditPost = () => {
         <ErrorMessage message={"Couldn't found post detail"} />
       ) : (
         <section className="container mx-auto max-w-5xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start">
-          <article className="flex-1">
+          <article className="flex-1 h-fit overflow-auto">
             <label htmlFor="postPicture" className="w-full cursor-pointer">
               {photo ? (
                 <img
@@ -102,7 +105,7 @@ const EditPost = () => {
                 <img
                   src={stables.UPLOAD_FOLDER_BASE_URL + data?.photo}
                   alt={data?.title}
-                  className="rounded-xl w-full"
+                  className="rounded-xl w-full h-4/5"
                 />
               ) : (
                 <div className="w-full min-h-[200px] bg-dark-soft flex justify-center">
@@ -123,20 +126,23 @@ const EditPost = () => {
             >
               Delete Image
             </button>
-            <div className="mt-4 flex gap-2">
-              {data?.categories.map((category) => (
-                <Link
-                  to={`/blog?category=${category.name}`}
-                  className="md:text-base text-primary text-sm font-roboto inline-block"
-                >
-                  {category.name}
-                </Link>
-              ))}
-            </div>
+
             <h1 className="md:text-[26px] text-xl font-medium font-roboto mt-4 text text-dark-hard">
               {data?.title}
             </h1>
-            <div className="mt-4 text-dark-hard">{body}</div>
+            {/* <div className="mt-4 text-dark-hard">{ <EditorProvider slotBefore={<MenuBar />} extensions={extensions} content={data?.body}/>}</div> */}
+            <div className="w-full">
+              {!isLoading && !isError && (
+                <Editor
+                  content={data?.body}
+                  editable={true}
+                  onDataChange={(data) => {
+                    setbody(data);
+                  }}
+                />
+              )}
+            </div>
+
             <button
               type="button"
               onClick={handleUpdatePost}

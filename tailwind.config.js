@@ -26,5 +26,6 @@ export default {
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes info about daisyUI version and used config in the console when building your CSS
     // The element that receives theme color CSS variables
+    prefix: "d-",
   },
 };
