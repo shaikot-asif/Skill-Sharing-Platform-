@@ -11,6 +11,7 @@ import Admin from "./pages/admin/screen/Admin";
 import Comments from "./pages/admin/screen/comments/Comments";
 import ManagePost from "./pages/admin/screen/posts/ManagePost";
 import EditPost from "./pages/admin/screen/posts/EditPost";
+import User from "./pages/admin/screen/users/User";
 function App() {
   return (
     <div className="font-openSans bg-dark-hard">
@@ -27,8 +28,10 @@ function App() {
 
           <Route path="posts/manage" element={<ManagePost />} />
           <Route path="posts/manage/edit/:slug" element={<EditPost />} />
+          <Route path="users/manage" element={<User />} />
         </Route>
       </Routes>
+
       <Toaster />
     </div>
   );

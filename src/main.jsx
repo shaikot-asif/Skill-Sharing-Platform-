@@ -8,7 +8,13 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import store from "./store/index";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>

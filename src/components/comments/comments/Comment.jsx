@@ -32,10 +32,17 @@ const Comment = ({
   const replyOnUserId = comment.user._id;
 
   return (
-    <div className="flex flex-nowrap items-start gap-x-3 bg-dark-hard p-3 rounded-lg">
+    <div
+      id={`comment-${comment?._id}`}
+      className="flex flex-nowrap items-start gap-x-3 bg-dark-hard p-3 rounded-lg"
+    >
       <img
         className="w-9 h-9 object-cover rounded-full"
-        src={comment?.user?.avatar? stables.UPLOAD_FOLDER_BASE_URL + comment.user.avatar : images.PostProfileImage}
+        src={
+          comment?.user?.avatar
+            ? stables.UPLOAD_FOLDER_BASE_URL + comment.user.avatar
+            : images.PostProfileImage
+        }
         alt="user Profile"
       />
       <div className="flex-1 flex flex-col">

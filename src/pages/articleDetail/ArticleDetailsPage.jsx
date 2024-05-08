@@ -3,7 +3,6 @@ import BreadCrumbs from "../../components/BreadCrumbs";
 import MainLayout from "../../components/MainLayout";
 import { Link, useParams } from "react-router-dom";
 import { images, stables } from "../../constants";
-import SuggestPost from "./container/SuggestPost";
 import CommentContainer from "../../components/comments/comments/CommentContainer";
 import SocialShareButtons from "../../components/comments/SocialShareButtons";
 import { useQuery } from "@tanstack/react-query";
@@ -117,7 +116,7 @@ const ArticleDetailsPage = () => {
               alt={data?.title}
               className="rounded-3xl w-full"
             />
-            <div className="mt-4 flex gap-2">
+            {/* <div className="mt-4 flex gap-2">
               {data?.categories.map((category) => (
                 <Link
                   to={`/blog?category=${category.name}`}
@@ -126,11 +125,15 @@ const ArticleDetailsPage = () => {
                   {category.name}
                 </Link>
               ))}
-            </div>
+            </div> */}
             <h1 className="md:text-[26px] text-xl font-medium font-roboto mt-4 text text-white">
               {data?.title}
             </h1>
-            <div className="w-full text-white">{!isLoading && !isError && <Editor content={data?.body} editable={false}/>  }</div>
+            <div className="w-full text-white">
+              {!isLoading && !isError && (
+                <Editor content={data?.body} editable={false} />
+              )}
+            </div>
             <CommentContainer
               comments={data?.comments}
               className="mt-10"
@@ -140,12 +143,20 @@ const ArticleDetailsPage = () => {
           </article>
 
           <div>
-            <SuggestPost
-              className="mt-8 lg:mt-0 lg:max-w-xs"
-              header="Latest Article"
-              posts={postData}
-              tags={tagsData}
-            />
+            <h2 className="text-white font-roboto font-medium mt-8 md:text-xl">
+              Tags
+            </h2>
+            <div className="flex flex-wrap gap-x-2 gap-y-2 mt-4">
+              {data?.tags.map((item, index) => (
+                <Link
+                  key={index}
+                  to="/"
+                  className="inline-block rounded-md px-3 py-1.5 bg-primary font-roboto text-xs text-white md:text-sm"
+                >
+                  {item}
+                </Link>
+              ))}
+            </div>
 
             <div className="mt-7">
               <h2 className="font-roboto font-medium text-white mb-4 md:text-xl">

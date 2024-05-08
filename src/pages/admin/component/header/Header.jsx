@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { images } from "../../../../constants/index.js";
 import { AiOutlineClose, AiOutlineMenu, AiFillDashboard } from "react-icons/ai";
-import { FaComments } from "react-icons/fa";
+import { FaComments, FaUser } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import NavItem from "./NavItem.jsx";
 import NavItemCollapse from "./NavItemCollapse.jsx";
@@ -61,14 +61,20 @@ const Header = () => {
 
       <div className="cursor-pointer lg:hidden">
         {isMenuActive ? (
-          <AiOutlineClose className="w-6 h-6" onClick={toggleMenuHandler} />
+          <AiOutlineClose
+            className="text-white w-6 h-6"
+            onClick={toggleMenuHandler}
+          />
         ) : (
-          <AiOutlineMenu className="w-6 h-6" onClick={toggleMenuHandler} />
+          <AiOutlineMenu
+            className="text-white w-6 h-6"
+            onClick={toggleMenuHandler}
+          />
         )}
       </div>
 
       {isMenuActive && (
-        <div className="fixed inset-0 lg:static lg:h-full lg:w-full">
+        <div className="z-50 fixed inset-0 lg:static lg:h-full lg:w-full">
           <div
             className="fixed inset-0 bg-black opacity-50 lg:hidden"
             onClick={toggleMenuHandler}
@@ -117,6 +123,15 @@ const Header = () => {
                   Add New Post
                 </button>
               </NavItemCollapse>
+
+              <NavItem
+                title="User"
+                name="user"
+                icon={<FaUser className="text-xl" />}
+                link="/admin/users/manage"
+                activeNavName={activeNavName}
+                setActiveNavName={setActiveNavName}
+              />
             </div>
           </div>
         </div>

@@ -12,23 +12,10 @@ import { Link } from "react-router-dom";
 const NavItemList = [
   { name: "Home", type: "link", href: "/" },
   { name: "Articles", type: "link", href: "/articles" },
-  {
-    name: "Pages",
-    type: "dropdown",
-    items: [
-      { title: "About Us", href: "/about" },
-      { title: "Contact Us", href: "/contact" },
-    ],
-  },
-  // { name: "Item", type: "link", href: "/item" },
-  { name: "Message", type: "link", href: "/message" },
-];
-const NavItem = ({ item }) => {
-  const [dropdown, setDropdown] = useState(false);
 
-  const toggleDropDown = () => {
-    setDropdown(!dropdown);
-  };
+  { name: "Message", type: "msgLink", href: "/message" },
+];
+const NavItem = ({ item, userState }) => {
   return (
     <li className="relative group border-b text-white border-transparent transition-all duration-300 hover:border-b hover:border-b-blue-500 cursor-pointer">
       {item.type === "link" ? (
@@ -38,32 +25,14 @@ const NavItem = ({ item }) => {
           </Link>
         </div>
       ) : (
-        <div className="flex flex-col items-center">
-          <button
-            className="py-4 px-2 flex gap-x-1 items-center"
-            onClick={toggleDropDown}
-          >
-            <span>{item.name}</span>
-            <RiArrowDropDownLine />
-          </button>
-          <div
-            className={`${
-              dropdown ? "block" : "hidden"
-            } lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}
-          >
-            <ul className="bg-dark-hard flex flex-col shadow-lg shadow-dark-soft overflow-hidden">
-              {item.items.map((name, index) => (
-                <Link
-                  key={index}
-                  className="px-4 py-2 border-b border-transparent transition-all duration-300 hover:border-b-primary"
-                  to={name.href}
-                >
-                  {name.title}
-                </Link>
-              ))}
-            </ul>
+        item.type === "msgLink" &&
+        userState?.userInfo?.token && (
+          <div>
+            <Link className="py-4 px-2" to={item.href}>
+              {item.name}
+            </Link>
           </div>
-        </div>
+        )
       )}
     </li>
   );
@@ -108,7 +77,7 @@ const Header = () => {
         >
           <ul className="flex flex-col lg:flex-row lg:gap-x-5 gap-y-5 font-semibold items-center">
             {NavItemList.map((item) => (
-              <NavItem key={item.name} item={item} />
+              <NavItem key={item.name} userState={userState} item={item} />
             ))}
           </ul>
 

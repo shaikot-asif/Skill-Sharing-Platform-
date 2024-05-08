@@ -1,4 +1,4 @@
-import { EditorContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor,useCurrentEditor } from "@tiptap/react";
 import "highlight.js/styles/atom-one-dark.css";
 import MenuBar from "./MenuBar";
 import extensions from "../../constants//tiptapExtention.js";
@@ -19,6 +19,8 @@ const Editor = ({ onDataChange, content, editable }) => {
     },
     content: content,
   });
+
+
 
   return (
     <div className="w-full relative">
