@@ -16,7 +16,7 @@ import cors from "cors";
 
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
-
+import commentRoutes from "./routes/commentRoutes.js";
 dotenv.config();
 mongoConnect();
 const app = express();
@@ -29,9 +29,9 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/comments", commentRoutes);
 
 //static assets
-console.log(__dirname);
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 app.use(invalidPathHandler);

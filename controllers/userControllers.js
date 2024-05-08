@@ -1,5 +1,7 @@
 import { uploadPicture } from "../middleware/uploadPirctureMiddleware.js";
 import User from "../models/User.js";
+import Comment from "../models/Comment.js";
+import Post from "../models/Post.js";
 import { fileRemover } from "../utils/fileRemover.js";
 
 const registerUser = async (req, res, next) => {
@@ -85,20 +87,36 @@ const userProfile = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
   try {
-    let user = await User.findById(req.user._id);
+    const userIdToUpdate = req.params.userId;
+
+    let userId = req.user._id;
+
+    if (!req.user.admin && userId !== userIdToUpdate) {
+      let error = new Error("Forbidden resource");
+      error.statusCode = 403;
+      throw error;
+    }
+
+    let user = await User.findById(userIdToUpdate);
+
     if (!user) {
       throw new Error("User not found");
     }
 
+    if (typeof req.body.admin !== "undefined" && req.user.admin) {
+      user.admin = req.body.admin;
+    }
+
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-
     if (req.body.password && req.body.password.length < 6) {
       throw new Error("Password length must be at least 6 character");
     } else if (req.body.password) {
       user.password = req.body.password;
     }
+
     const updatedUserProfile = await user.save();
+
     res.json({
       _id: updatedUserProfile._id,
       avatar: updatedUserProfile.avatar,
@@ -167,10 +185,81 @@ const updateProfilePicture = async (req, res, next) => {
   }
 };
 
+const getAllUsers = async (req, res, next) => {
+  try {
+    const filter = req.query.searchKeyword;
+    let where = {};
+    if (filter) {
+      where.email = { $regex: filter, $options: "i" };
+    }
+    let query = User.find(where);
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * pageSize;
+    const total = await User.find(where).countDocuments();
+    const pages = Math.ceil(total / pageSize);
+
+    res.header({
+      "x-filter": filter,
+      "x-totalcount": JSON.stringify(total),
+      "x-currentpage": JSON.stringify(page),
+      "x-pagesize": JSON.stringify(pageSize),
+      "x-totalpagecount": JSON.stringify(pages),
+    });
+
+    if (page > pages) {
+      return res.json([]);
+    }
+
+    const result = await query
+      .skip(skip)
+      .limit(pageSize)
+      .sort({ updatedAt: "desc" });
+
+    return res.json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  try {
+    let user = await User.findById(req.params.userId);
+
+    if (!user) {
+      throw new Error("User no found");
+    }
+
+    const postsToDelete = await Post.find({ user: user._id });
+    const postIdsToDelete = postsToDelete.map((post) => post._id);
+
+    await Comment.deleteMany({
+      post: { $in: postIdsToDelete },
+    });
+
+    await Post.deleteMany({
+      _id: { $in: postIdsToDelete },
+    });
+
+    postsToDelete.forEach((post) => {
+      fileRemover(post.photo);
+    });
+
+    await user.remove();
+    fileRemover(user.avatar);
+
+    res.status(204).json({ message: "User is deleted successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   registerUser,
   loginUser,
   userProfile,
   updateProfile,
   updateProfilePicture,
+  getAllUsers,
+  deleteUser,
 };
