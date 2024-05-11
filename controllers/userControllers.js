@@ -254,6 +254,20 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+const getAllUsersForMessage = async (req, res, next) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      "email",
+      "name",
+      "avatar",
+      "_id",
+    ]);
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
 export {
   registerUser,
   loginUser,
