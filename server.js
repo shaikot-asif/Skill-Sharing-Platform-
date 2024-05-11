@@ -7,6 +7,7 @@ import mongoConnect from "./config/db.js";
 import { errorResponserHandler } from "./middleware/errorHandler.js";
 import { invalidPathHandler } from "./middleware/errorHandler.js";
 import { Server } from "socket.io";
+import http from "http";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // const __dirname = path.resolve();
@@ -41,13 +42,12 @@ app.use(invalidPathHandler);
 app.use(errorResponserHandler);
 
 const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () =>
-  console.log(`server is running on port ${PORT}`)
-);
+
+const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:8000",
+    origin: "http://localhost:5173",
     credentials: true,
   },
 });
@@ -66,3 +66,5 @@ io.on("connection", (socket) => {
     }
   });
 });
+
+server.listen(PORT, () => console.log(`server is running on port ${PORT}`));
