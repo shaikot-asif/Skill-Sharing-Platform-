@@ -13,7 +13,7 @@ const NavItemList = [
   { name: "Home", type: "link", href: "/" },
   { name: "Articles", type: "link", href: "/articles" },
 
-  { name: "Message", type: "msgLink", href: "/message" },
+  { name: "Message", type: "msgLink", href: "/messages" },
 ];
 const NavItem = ({ item, userState }) => {
   return (
