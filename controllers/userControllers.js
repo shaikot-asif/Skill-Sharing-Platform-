@@ -245,7 +245,7 @@ const deleteUser = async (req, res, next) => {
       fileRemover(post.photo);
     });
 
-    await user.remove();
+    await user.deleteOne();
     fileRemover(user.avatar);
 
     res.status(204).json({ message: "User is deleted successfully" });

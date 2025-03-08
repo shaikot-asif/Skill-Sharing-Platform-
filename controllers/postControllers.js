@@ -107,10 +107,7 @@ const getPost = async (req, res, next) => {
         path: "user",
         select: ["avatar", "name"],
       },
-      // {
-      //   path: "categories",
-      //   select: ["title"],
-      // },
+
       {
         path: "comments",
         match: {
@@ -159,7 +156,7 @@ const getAllPosts = async (req, res, next) => {
     }
     let query = Post.find(where);
     const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.limit) || 10;
+    const pageSize = parseInt(req.query.limit) || 100;
     const skip = (page - 1) * pageSize;
     const total = await Post.find(where).countDocuments();
     const pages = Math.ceil(total / pageSize);
