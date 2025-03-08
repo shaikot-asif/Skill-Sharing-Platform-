@@ -25,7 +25,7 @@ const ManagePost = () => {
     deleteDataHandler,
     setCurrentPage,
   } = useDataTable({
-    dataQueryFn: () => getAllPosts(searchKeyword, currentPage),
+    dataQueryFn: () => getAllPosts(searchKeyword),
     dataQueryKey: "posts",
     deleteDataMessage: "Post is deleted",
     mutateDeleteFn: ({ slug, token }) => {

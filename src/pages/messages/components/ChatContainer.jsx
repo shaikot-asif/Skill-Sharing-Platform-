@@ -16,7 +16,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
     const responseData = async () => {
       if (currentChat) {
         const response = await axios.post(
-          "http://localhost:8000/api/messages/getmsg",
+          `${import.meta.env.VITE_API}/api/messages/getmsg`,
           {
             from: currentUser._id,
             to: currentChat._id,
@@ -28,6 +28,10 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
     };
     responseData();
   }, [currentChat]);
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const getCurrentChat = async () => {
@@ -45,7 +49,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
       from: data._id,
       msg,
     });
-    await axios.post("http://localhost:8000/api/messages/addmsg", {
+    await axios.post(`${import.meta.env.VITE_API}/api/messages/addmsg`, {
       from: data._id,
       to: currentChat._id,
       message: msg,
@@ -74,7 +78,7 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
   return (
     <Container>
       {currentChat && (
-        <div className="chat-header">
+        <div className="chat-header mt-10">
           <div className="user-details">
             <div className="avatar">
               <img

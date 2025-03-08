@@ -13,12 +13,14 @@ import ManagePost from "./pages/admin/screen/posts/ManagePost";
 import EditPost from "./pages/admin/screen/posts/EditPost";
 import User from "./pages/admin/screen/users/User";
 import Chat from "./pages/messages/Chat";
+import ArticlePage from "./pages/article/ArticlePage";
 function App() {
   return (
     <div className="font-openSans bg-dark-hard">
       <Routes>
         <Route index path="/" element={<HomePage />} />
 
+        <Route path="/articles" element={<ArticlePage />} />
         <Route path="/blog/:slug" element={<ArticleDetailsPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />

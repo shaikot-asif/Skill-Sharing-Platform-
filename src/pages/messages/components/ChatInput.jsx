@@ -32,6 +32,7 @@ export default function ChatInput({ handleSendMsg }) {
           <BsEmojiSmileFill onClick={handleEmojiPickerhideShow} />
           {showEmojiPicker && (
             <Picker
+              className="emojiMargin"
               onEmojiClick={(emojiObject, event) =>
                 handleEmojiClick(event, emojiObject)
               }
@@ -103,6 +104,9 @@ const Container = styled.div`
         }
       }
     }
+  }
+  .emojiMargin {
+    margin-top: -32rem;
   }
   .input-container {
     width: 100%;

@@ -1,4 +1,5 @@
 import axios from "axios";
+const url = import.meta.env.VITE_API;
 
 export const createNewComment = async ({
   token,
@@ -15,7 +16,7 @@ export const createNewComment = async ({
     };
 
     const { data } = await axios.post(
-      "http://localhost:8000/api/comments",
+      `${url}/api/comments`,
       {
         desc,
         slug,
@@ -41,7 +42,7 @@ export const updateComment = async ({ token, desc, check, commentId }) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:8000/api/comments/${commentId}`,
+      `${url}/api/comments/${commentId}`,
       {
         desc,
         check,
@@ -66,7 +67,7 @@ export const deleteComment = async ({ token, commentId }) => {
     };
 
     const { data } = await axios.delete(
-      `http://localhost:8000/api/comments/${commentId}`,
+      `${url}/api/comments/${commentId}`,
 
       config
     );
@@ -88,7 +89,7 @@ export const getAllComments = async (token, searchKeyword = "") => {
     };
 
     const { data, headers } = await axios.get(
-      `http://localhost:8000/api/comments?searchKeyword=${searchKeyword}`,
+      `${url}/api/comments?searchKeyword=${searchKeyword}`,
       config
     );
     return { data, headers };

@@ -8,7 +8,7 @@ const CTA = () => {
       <div className="lg:place-items-center  container grid grid-cols-12 mx-auto py-10 md:pb-10">
         <div className="col-span-12 lg:col-span-6">
           <h2 className="lg:text-left font-roboto font-bold text-2xl md:text-4xl md:text-center md:leading-normal">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+            Unlock Your Potential. Share Your Skills. Learn from Others.
           </h2>
           <div className="lg:mx-0  w-full max-w-[494px] mt-12 space-y-3 mx-auto md:space-y-0 md:flex md:items-center md:space-x-2">
             <input
@@ -22,10 +22,10 @@ const CTA = () => {
           </div>
           <p className="text-sm leading-7 mt-6 lg:text-left">
             <span className="italic font-bold text-dark-soft">
-              Lorem ipsum dolor sit
+              Whether you're here
             </span>
-            , amet consectetur adipisicing elit. Iure architecto, magnam
-            inventore sint aspernatur laboriosam.
+            , to teach, learn, or both, this is the place where skills meet
+            opportunity.
           </p>
         </div>
 
@@ -39,11 +39,11 @@ const CTA = () => {
               />
               <div className="text-white p-5">
                 <h2 className="lg:text-[28px] font-roboto font-bold text-xl md:text-2xl">
-                  Lorem ipsum dolor sit.
+                  Ready to Dive In?
                 </h2>
                 <p className="mt-3 text-white text-sm md:text-lg">
-                  Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor sit
-                  amet consectetur adipisicing elit
+                  Explore, contribute, and grow with us. Because every skill
+                  shared is a step toward a brighter, smarter world.
                 </p>
               </div>
             </div>

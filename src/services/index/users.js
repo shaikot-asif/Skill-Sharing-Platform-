@@ -1,15 +1,14 @@
 import axios from "axios";
 
+const url = import.meta.env.VITE_API;
+
 export const signup = async ({ name, email, password }) => {
   try {
-    const { data } = await axios.post(
-      "http://localhost:8000/api/users/register",
-      {
-        name,
-        email,
-        password,
-      }
-    );
+    const { data } = await axios.post(`${url}/api/users/register`, {
+      name,
+      email,
+      password,
+    });
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -20,7 +19,7 @@ export const signup = async ({ name, email, password }) => {
 
 export const login = async ({ email, password }) => {
   try {
-    const { data } = await axios.post("http://localhost:8000/api/users/login", {
+    const { data } = await axios.post(`${url}/api/users/login`, {
       email,
       password,
     });
@@ -39,10 +38,7 @@ export const getUserProfile = async ({ token }) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.get(
-      "http://localhost:8000/api/users/profile",
-      config
-    );
+    const { data } = await axios.get(`${url}/api/users/profile`, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)
@@ -60,7 +56,7 @@ export const updateProfile = async ({ token, userData, userId }) => {
     };
 
     const { data } = await axios.put(
-      `http://localhost:8000/api/users/updateProfile/${userId}`,
+      `${url}/api/users/updateProfile/${userId}`,
       userData,
       config
     );
@@ -81,7 +77,7 @@ export const updateProfilePicture = async ({ token, formData }) => {
       },
     };
     const { data } = await axios.put(
-      "http://localhost:8000/api/users/updateProfilePicture",
+      `${url}/api/users/updateProfilePicture`,
       formData,
       config
     );
@@ -97,7 +93,7 @@ export const getAllUsers = async (
   token,
   searchKeyword = "",
   page = 1,
-  limit = 10
+  limit = 1000
 ) => {
   try {
     const config = {
@@ -107,7 +103,7 @@ export const getAllUsers = async (
     };
 
     const { data, headers } = await axios.get(
-      `http://localhost:8000/api/users?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`,
+      `${url}/api/users?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`,
       config
     );
     return { data, headers };
@@ -126,10 +122,7 @@ export const deleteUser = async ({ slug, token }) => {
       },
     };
 
-    const { data } = await axios.delete(
-      `http://localhost:8000/api/users/${slug}`,
-      config
-    );
+    const { data } = await axios.delete(`${url}/api/users/${slug}`, config);
     return data;
   } catch (error) {
     if (error.response && error.response.data.message)

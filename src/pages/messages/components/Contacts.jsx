@@ -13,6 +13,11 @@ const Contacts = ({ contacts, currentUser, changeChat }) => {
     setCurrentUserImage(currentUser?.avatar);
     setCurrentUserName(currentUser?.name);
   }, [currentUser]);
+
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, []);
+
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
     changeChat(contact);

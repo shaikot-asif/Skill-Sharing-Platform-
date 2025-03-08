@@ -18,38 +18,6 @@ import ArticleDetailSkeleton from "./components/ArticleDetailSkeleton";
 import ErrorMessage from "../../components/ErrorMessage";
 import { useSelector } from "react-redux";
 import Editor from "../../components/editor/Editor";
-// const breadcrumbs = [
-//   { name: "Home", link: "/" },
-//   { name: "Blog", link: "/blog" },
-//   { name: "Article title", link: "/blog/1" },
-// ];
-const postData = [
-  {
-    _id: "1",
-    image: images.Post1,
-    title: "Help children get better education",
-    createdAt: "2024-01-28T15:35:53.607+0000",
-  },
-  {
-    _id: "2",
-    image: images.Post1,
-    title: "Help children get better education",
-    createdAt: "2024-01-28T15:35:53.607+0000",
-  },
-  {
-    _id: "3",
-    image: images.Post1,
-    title: "Help children get better education",
-    createdAt: new Date(),
-  },
-  {
-    _id: "4",
-    image: images.Post1,
-    title: "Help children get better education",
-    createdAt: new Date(),
-  },
-];
-const tagsData = ["JavaScipt", "React.js", "Node js", "Web Development"];
 
 const ArticleDetailsPage = () => {
   const { slug } = useParams();
@@ -89,7 +57,7 @@ const ArticleDetailsPage = () => {
   useEffect(() => {
     setBreadCrumbs([
       { name: "Home", link: "/" },
-      { name: "Articles", link: "/blog" },
+      { name: "Articles", link: "/articles" },
       { name: `${data?.title}`, link: `/blog/${data?.slug}` },
     ]);
     setBody(

@@ -35,7 +35,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (currentUser) {
-      socket.current = io("http://localhost:8000/");
+      socket.current = io(`${import.meta.env.VITE_API}`);
       socket.current.emit("add-user", currentUser._id);
     }
   }, [currentUser]);
@@ -44,7 +44,9 @@ const Chat = () => {
     const fetchData = async () => {
       if (currentUser) {
         const data = await axios.get(
-          `http://localhost:8000/api/messages/allusers/${currentUser?._id}`
+          `${import.meta.env.VITE_API}/api/messages/allusers/${
+            currentUser?._id
+          }`
         );
         setContacts(data.data);
       }
@@ -55,7 +57,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (currentUser) {
-      socket.current = io("http://localhost:8000");
+      socket.current = io(`${import.meta.env.VITE_API}`);
       socket.current.emit("add-user", currentUser._id);
     }
 
@@ -94,13 +96,14 @@ export default Chat;
 
 const Container = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 90vw;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
   align-items: center;
-  background-color: #131324;
+  /* background-color: ; */
   .container {
     height: 85vh;
     width: 85vw;

@@ -6,10 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import ArticleCardSkeleton from "../../../components/ArticleCardSkeleton";
 import ErrorMessage from "../../../components/ErrorMessage";
+import { Link } from "react-router-dom";
 
 const Articles = () => {
   const { data, isLoading, isError } = useQuery({
-    queryFn: () => getAllPosts(),
+    queryFn: () => getAllPosts("", 1, 6),
     queryKey: ["posts"],
     throwOnError: (error) => {
       toast.error(error.message);
@@ -30,7 +31,7 @@ const Articles = () => {
         ) : isError ? (
           <ErrorMessage message={"Couldn't found data"} />
         ) : (
-          data?.data.map((post) => (
+          data?.data.map((post, index) => (
             <ArticleCard
               key={post._id}
               post={post}
@@ -41,10 +42,13 @@ const Articles = () => {
           ))
         )}
       </div>
-      <button className="mx-auto flex items-center gap-x-2 font-bold text-primary border-2 border-primary px-6 py-3 rounded-lg">
+      <Link
+        to={"/articles"}
+        className="mx-auto flex items-center gap-x-2 font-bold text-primary border-2 border-primary px-6 py-3 rounded-lg"
+      >
         <span>More article</span>
         <FaArrowRight />
-      </button>
+      </Link>
     </section>
   );
 };

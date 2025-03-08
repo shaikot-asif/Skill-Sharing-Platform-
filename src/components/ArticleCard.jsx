@@ -6,7 +6,6 @@ import stables from "../constants/stable";
 import { Link } from "react-router-dom";
 
 const ArticleCard = ({ className, post }) => {
-  console.log(post);
   return (
     <div
       className={`rounded-3xl overflow-hidden bg-dark-soft shadow-[0_3px_10px_#f7fafc)] ${className}`}

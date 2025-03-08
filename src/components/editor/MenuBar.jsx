@@ -23,54 +23,6 @@ const MenuBar = ({ editor }) => {
   return (
     <div className="border border-slate-300 rounded-lg p-5 sticky top-3 left-0 right-0 bg-white z-10 flex gap-0.5 flex-wrap">
       <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={`editor-btn font-black ${
-          editor.isActive("heading", { level: 1 }) && "active-editor-btn"
-        }`}
-      >
-        H1
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={`editor-btn font-extrabold ${
-          editor.isActive("heading", { level: 2 }) && "active-editor-btn"
-        }`}
-      >
-        H2
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={`editor-btn font-semibold ${
-          editor.isActive("heading", { level: 3 }) && "active-editor-btn"
-        }`}
-      >
-        H3
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={`editor-btn font-medium ${
-          editor.isActive("heading", { level: 4 }) && "active-editor-btn"
-        }`}
-      >
-        H4
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={`editor-btn font-normal ${
-          editor.isActive("heading", { level: 5 }) && "active-editor-btn"
-        }`}
-      >
-        H5
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={`editor-btn font-normal ${
-          editor.isActive("heading", { level: 6 }) && "active-editor-btn"
-        }`}
-      >
-        H6
-      </button>
-      <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         disabled={!editor.can().chain().focus().toggleBold().run()}
         className={`editor-btn ${
@@ -106,12 +58,7 @@ const MenuBar = ({ editor }) => {
       >
         <FiCode />
       </button>
-      <button
-        onClick={() => editor.chain().focus().unsetAllMarks().run()}
-        className={`editor-btn`}
-      >
-        <MdOutlineLayersClear />
-      </button>
+
       <button
         onClick={() => editor.chain().focus().clearNodes().run()}
         className={`editor-btn`}
@@ -127,22 +74,6 @@ const MenuBar = ({ editor }) => {
         <BiParagraph />
       </button>
 
-      <button
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={`editor-btn ${
-          editor.isActive("bulletList") && "active-editor-btn"
-        }`}
-      >
-        <AiOutlineUnorderedList />
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={`editor-btn ${
-          editor.isActive("orderedList") && "active-editor-btn"
-        }`}
-      >
-        <AiOutlineOrderedList />
-      </button>
       <button
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         className={`editor-btn ${
